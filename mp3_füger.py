@@ -40,7 +40,7 @@ def numeric_sort_key(filename):
 class MP3MergerApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("MP3 Merger mit Pydub")
+        self.root.title("MP3 Merger Instanz")
         self.files = []
 
         self.listbox = tk.Listbox(root, selectmode=tk.SINGLE, width=60, height=20)
@@ -133,6 +133,20 @@ class MP3MergerApp:
         self.root.after(0, self.progress_export.stop)
         self.root.after(0, lambda: messagebox.showinfo("Fertig", f"Dateien wurden erfolgreich zusammengefügt:\n{output}"))
 
+class MainApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("MP3 Merger Hauptfenster")
+
+        tk.Button(root, text="Neue Instanz öffnen", command=self.open_new_instance).pack(pady=10)
+
+        # Erste Instanz direkt starten
+        self.open_new_instance()
+
+    def open_new_instance(self):
+        new_win = tk.Toplevel(self.root)
+        MP3MergerApp(new_win)
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.withdraw()  # GUI erst nach ffmpeg-Check zeigen
@@ -141,5 +155,5 @@ if __name__ == "__main__":
         sys.exit("ffmpeg ist erforderlich, konnte aber nicht installiert werden.")
 
     root.deiconify()
-    app = MP3MergerApp(root)
+    app = MainApp(root)
     root.mainloop()
